@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Hurricanes and Typhoons</title>
+
+  <style type="text/css">
+    body, html {
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="vsjs/vis.js"></script>
+  <link href="vsjs/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+  
+</head>
+<body>
+
+<p>
+  Hurricane and Typhoon timeline ( zoom to select an event ).
+</p>
+
+<div id="timeline"></div>
+
+<script type="text/javascript">
+  // DOM element where the Timeline will be attached
+  var container = document.getElementById('timeline');
+
+  // Create a DataSet (allows two way data-binding)
+  var items = new vis.DataSet([
+    {id: 1, content: 'AL011851', start: '1851-06-26', end:'1851-06-28'},
+    {id: 2, content: 'AL041988', start: '1988-08-31', end : '1988-09-08' },
+    {id: 3, content: 'AL202005', start: '2005-10-01', end:'2005-10-05'},
+    {id: 4, content: 'AL041966', start: '1966-07-01', end: '1966-07-14'},
+    {id: 5, content: 'AL041903', start: '1903-09-12', end:'1903-09-17'},
+    {id: 6, content: 'TODAY', start: '2019-03-14', type: 'point'}
+  ]);
+
+  // Configuration for the Timeline  : http://visjs.org/docs/timeline/#Configuration_Options
+  // TODO: ADD clicktouse, selectable, showtooltips, tootlti[]
+  var options = { 
+      zoomMax: 63072000000000
+  };
+
+  // Create a Timeline
+  var timeline = new vis.Timeline(container, items, options);
+</script>
+</body>
+</html>
