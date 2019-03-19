@@ -15,7 +15,7 @@ var tdorothy;
   // Configuration for the Timeline  : http://visjs.org/docs/timeline/#Configuration_Options
   // TODO: ADD clicktouse, selectable, showtooltips, tootlti[]
   var options = { 
-     // zoomMax: 63072000000000
+      zoomMax: 31536000000000,
      clickToUse: true  //verify
   };
 
@@ -27,21 +27,27 @@ var tdorothy;
         tmobj=properties;
         console.log(tmobj);
         alert('selected items: ' + properties.item);
-        
+        drawPath(properties.item);
     });  
 
-drawPath('');
+
 
 function drawPath(pathData){
-    let mapZoomLevel = 12;
+    let mapZoomLevel = 8;
     streetmap.addTo(pathMap);
-    d3.json('/static/js/dorothy_json.json', function(pdata) {
+   // d3.json('../static/js/dorothy_json.json', function(pdata) {
+   d3.json('../static/js/dorothy_json.json').then(function(pdata){ //console.log(data)});   
+        console.log(pdata);
         tdorothy=pdata;
         L.geoJson(pdata, {
             style: mapStyle 
         }).addTo(pathMap);
-        
-         //pathmap.fitBounds(this.getBounds());
+        latlns=[]
+        pdata.forEach(e=>{latlns.push([e.Latitude,e.Longitude])})
+        let polyline = L.polyline(latlns, {color: 'red', weight:1}).addTo(pathMap);
+        // zoom the map to the polyline
+        pathMap.fitBounds(polyline.getBounds());
+                
     });
 
     
