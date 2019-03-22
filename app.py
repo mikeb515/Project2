@@ -24,13 +24,41 @@ def home():
 #    return '<h1> App started ... </h1>'
     return render_template("home.html")
 
+
+#Connect and Load data from csv into db:
+from sqlalchemy import create_engine, ForeignKey
+from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+engine = create_engine('sqlite:///Hurricane.sqlite', echo=False)
+con = engine.connect()
+con.execute('''CREATE TABLE IF NOT EXISTS Hurricanes(
+                ID integer not null primary key, 
+                Name Varchar (100),
+                Time integer not null,
+                Event Varchar (100),
+                Status Varchar (100),
+                Latitude integer not null,
+                Longitude integer not null,
+                Wind integer not null,
+                Pressure integer not null,
+                ISODate Varchar (100),
+                Location Varchar (100)
+                )''')
+csv_df = pd.read_csv('hurdat.csv', index_col=0)
+csv_df.to_sql('Hurricanes', engine, if_exists='replace', index=True, index_label="id")
+
+# returns a list of all events with start date, end date and max wind speed
+from getFromDb import getEvents
+@app.route("/events")
+def events():
+    allEvents = getEvents(engine)
+    print(allEvents)
+    return render_template("timeline.html", events=jsonify(allEvents))
+    
 # returns a list of all events with start datem, end date and max wind speed
 #from getFromDb import getEvents
 
-@app.route("/events")
-def events():
-    allEvents = getEvents()
-    return jsonify(allEvents)
+
 #----------------------------------------------
 # Return the heatmap page.
 
