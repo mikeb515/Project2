@@ -29,7 +29,7 @@ def home():
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, Date, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-engine = create_engine('sqlite:///Hurricane.sqlite', echo=False)
+engine = create_engine('sqlite:///db/Hurricane.sqlite', echo=False)
 con = engine.connect()
 con.execute('''CREATE TABLE IF NOT EXISTS Hurricanes(
                 ID integer not null primary key, 
