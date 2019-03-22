@@ -22,5 +22,14 @@ def home():
 #    return '<h1> App started ... </h1>'
     return render_template("home.html")
 
+
+
+# returns a list of all events with start datem, end date and max wind speed
+from getFromDb import getEvents
+@app.route("/events")
+def events():
+    allEvents = getEvents()
+    return jsonify(allEvents)
+
 if __name__ == "__main__":
     app.run(debug=True)
