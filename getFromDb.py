@@ -56,7 +56,7 @@ def getEvents(engine):
 
 
 
-engine = create_engine('sqlite:///Hurricane.sqlite', echo=False)
+engine = create_engine('sqlite:///db/Hurricane.sqlite', echo=False)
 con = engine.connect()
 
 con.execute('''CREATE TABLE IF NOT EXISTS Hurricanes(
@@ -73,7 +73,7 @@ con.execute('''CREATE TABLE IF NOT EXISTS Hurricanes(
                 Location Varchar (100)
                 )''')
 
-df = pd.read_csv('hurdat.csv', index_col=0)
+df = pd.read_csv('db/hurdat.csv', index_col=0)
 df.to_sql('Hurricanes', engine, if_exists='replace', index=True, index_label="id")
 
 data = pd.read_sql('Select * from Hurricanes',engine)

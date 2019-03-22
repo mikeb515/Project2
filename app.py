@@ -44,7 +44,7 @@ con.execute('''CREATE TABLE IF NOT EXISTS Hurricanes(
                 ISODate Varchar (100),
                 Location Varchar (100)
                 )''')
-csv_df = pd.read_csv('hurdat.csv', index_col=0)
+csv_df = pd.read_csv('db/hurdat.csv', index_col=0)
 csv_df.to_sql('Hurricanes', engine, if_exists='replace', index=True, index_label="id")
 
 # returns a list of all events with start date, end date and max wind speed
@@ -54,10 +54,6 @@ def events():
     allEvents = getEvents(engine)
     print(allEvents)
     return render_template("timeline.html", events=jsonify(allEvents))
-    
-# returns a list of all events with start datem, end date and max wind speed
-#from getFromDb import getEvents
-
 
 #----------------------------------------------
 # Return the heatmap page.
