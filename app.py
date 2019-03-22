@@ -14,6 +14,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
+df = pd.read_csv('db/hurdat.csv')
+
 #----------------------------------------------
 # Return the homepage.
 
@@ -22,6 +24,7 @@ def home():
 #    return '<h1> App started ... </h1>'
     return render_template("home.html")
 
+<<<<<<< HEAD
 
 
 # returns a list of all events with start datem, end date and max wind speed
@@ -30,6 +33,62 @@ from getFromDb import getEvents
 def events():
     allEvents = getEvents()
     return jsonify(allEvents)
+=======
+#----------------------------------------------
+# Return the heatmap page.
+
+@app.route("/heatmap")
+def heatmap():
+#    return '<h1> App started ... </h1>'
+    return render_template("heatmap.html")
+
+#----------------------------------------------
+# Return data points for East Pacific 
+
+@app.route("/epdata")
+def epdata():
+
+    dftmp = df[df['Location']=='East Pacific']
+
+    pts = {'points':[]}
+
+    for i in range(0,dftmp.shape[0]) :
+        pts['points'].append([dftmp.iloc[i]['Latitude'],dftmp.iloc[i]['Longitude']])
+
+    return jsonify(pts)
+
+#----------------------------------------------
+# Return data points for Central Pacific 
+
+@app.route("/cpdata")
+def cpdata():
+    
+    dftmp = df[df['Location']=='Central Pacific']
+
+    pts = {'points':[]}
+
+    for i in range(0,dftmp.shape[0]) :
+        pts['points'].append([dftmp.iloc[i]['Latitude'],dftmp.iloc[i]['Longitude']])
+
+    return jsonify(pts)
+
+#----------------------------------------------
+# Return data points for Atlantic 
+
+@app.route("/aldata")
+def aldata():
+    
+    dftmp = df[df['Location']=='Atlantic']
+
+    pts = {'points':[]}
+
+    for i in range(0,dftmp.shape[0]) :
+        pts['points'].append([dftmp.iloc[i]['Latitude'],dftmp.iloc[i]['Longitude']])
+
+    return jsonify(pts)
+>>>>>>> f2f1890f2912c375d7fa80f823a34b4a31a0efc5
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
