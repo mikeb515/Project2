@@ -45,7 +45,7 @@ def getEvents(engine):
         sdate=sdstr[0:4]+"-"+sdstr[4:6]+"-"+sdstr[6:8]
         edstr=str(row['edate'])
         edate=edstr[0:4]+"-"+edstr[4:6]+"-"+edstr[6:8]
-        thisevent={ 'id': row['id'], 'start':sdate, 'end':edate, 'content':row['Name'].strip(), 'className':st }
+        thisevent={ "id": row['id'], "start":sdate, "end":edate, "content":row['Name'].strip(), 'className':st }
         hurrs.append(thisevent)
     return hurrs
 

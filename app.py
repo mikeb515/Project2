@@ -11,6 +11,7 @@ from sqlalchemy import create_engine, desc
 
 from flask import Flask, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask import Response
 
 app = Flask(__name__)
 
@@ -48,12 +49,24 @@ csv_df = pd.read_csv('db/hurdat.csv', index_col=0)
 csv_df.to_sql('Hurricanes', engine, if_exists='replace', index=True, index_label="id")
 
 # returns a list of all events with start date, end date and max wind speed
-from getFromDb import getEvents
+from getFromDb import getEvents, makeGeo
+
+
 @app.route("/events")
 def events():
     allEvents = getEvents(engine)
-    print(allEvents)
-    return render_template("timeline.html", events=jsonify(allEvents))
+    print(allEvents[0])
+    return jsonify(list(allEvents))  #// for API testing
+    #return render_template("timeline.html", events=jsonify(list(allEvents)))
+
+# get single event info
+@app.route("/events/<id_x>")
+def eventX(id_x):
+    this_event_geo = makeGeo(engine,id_x)
+    print(this_event_geo)
+    return jsonify(this_event_geo)
+
+
 
 #----------------------------------------------
 # Return the heatmap page.

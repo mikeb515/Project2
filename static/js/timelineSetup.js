@@ -1,33 +1,34 @@
 var container = document.getElementById('timeline');
-var gclick;
-var gpdata;
-let lastEvent="";
+let gevents; //global copy of event response
+let gclick; // global copy of click data 
+let gpdata; // global copy of patg data
+let lastEvent=""; 
+let t=('1965-01-01', '1966-01-31') // default view area for timeline
 
-  // Create a DataSet (allows two way data-binding)
-  var events;
+
   // Configuration for the Timeline  : http://visjs.org/docs/timeline/#Configuration_Options
   var options = { 
-      zoomMax: 315360000000000
-  };
+    zoomMax: 315360000000000
+};
 
-  // Create a Timeline
-  var timeline = new vis.Timeline(container, new vis.DataSet(events), options);
-  timeline.setWindow('1965-01-01', '1966-01-31');
-  timeline.on('click', function (clickObj) {
+d3.json("/events").then(function(events){
+    gevents = events;
+    console.log(events[0]);
+    var timeline = new vis.Timeline(container, new vis.DataSet(events), options);
+    timeline.setWindow(t);
+    timeline.on('click', function (clickObj) {
         gclick=clickObj;
         eventId=clickObj.item;
         console.log(clickObj);
         if (eventId !== null  && lastEvent !=eventId){
             lastEvent=eventId
-            drawGraphs(eventId);}
+            drawGraphs(eventId);
+        }
     });  
+});// end json to get timeline data at /events route
 
 
-function choose(choices) {
-    console.log(choices);
-    var index = Math.floor(Math.random() * choices.length);
-    return choices[index];
-    }
+
 
 function getColor(x){ 
     console.log(x);
@@ -43,13 +44,14 @@ function getColor(x){
 function drawGraphs(eventID){  //replace with actual json query to use in line d3.json...
     /* start with map */
     streetmap.addTo(pathMap);
-    d3.json('../static/js/dorothy_json.json').then(function(pdata){ //RTEPLACE W JSON FROM FLASK WITH eventID   
+    d3.json("/events/"+eventID).then(function(events){
+    //d3.json('../static/js/dorothy_json.json').then(function(pdata){ //RTEPLACE W JSON FROM FLASK WITH eventID   
         gpdata=pdata; //global copy
        L.geoJson(pdata, {
             style: function (feature) {
                 return {
                  "color": getColor(feature.properties.winds),
-                 "opacity": 1,
+                 "opacity": 1
                 }}
         }).addTo(pathMap)
     
