@@ -3,19 +3,20 @@ let gevents; //global copy of event response
 let gclick; // global copy of click data 
 let gpdata; // global copy of patg data
 let lastEvent=""; 
-let t=('1965-01-01', '1966-01-31') // default view area for timeline
-
+//let eventName="";
+//let t=('1965-01-01', '1966-01-31') // default view area for timeline
+//let gx;
 
   // Configuration for the Timeline  : http://visjs.org/docs/timeline/#Configuration_Options
   var options = { 
     zoomMax: 315360000000000
 };
 
-d3.json("/events").then(function(events){
+d3.json("/b_events").then(function(events){
     gevents = events;
-    console.log(events[0]);
+    //console.log(events[0]);
     var timeline = new vis.Timeline(container, new vis.DataSet(events), options);
-    timeline.setWindow(t);
+    timeline.setWindow('1964-01-01', '1965-01-31');
     timeline.on('click', function (clickObj) {
         gclick=clickObj;
         eventId=clickObj.item;
@@ -25,13 +26,9 @@ d3.json("/events").then(function(events){
             drawGraphs(eventId);
         }
     });  
-});// end json to get timeline data at /events route
-
-
-
+});// end json to get timeline data 
 
 function getColor(x){ 
-    console.log(x);
     return x > 156 ? '#BD0026' :	//cat5
             x > 129 ? '#F03b20'	:	//cat4
             x > 110 ? '#FD8D3C'	:	//cat3
@@ -40,19 +37,26 @@ function getColor(x){
             x > 38	? '#B6F0B6'	:	//tstorm
                     '#DCE3DD'; 		//storm
 }
-
+// get event specific data from /
 function drawGraphs(eventID){  //replace with actual json query to use in line d3.json...
     /* start with map */
-    streetmap.addTo(pathMap);
-    d3.json("/events/"+eventID).then(function(events){
-    //d3.json('../static/js/dorothy_json.json').then(function(pdata){ //RTEPLACE W JSON FROM FLASK WITH eventID   
-        gpdata=pdata; //global copy
-       L.geoJson(pdata, {
-            style: function (feature) {
+    outdoorsmap.addTo(pathMap);
+               /* function (feature) {
                 return {
-                 "color": getColor(feature.properties.winds),
+                 "color": 'blue',//getColor(feature.properties.winds),
                  "opacity": 1
-                }}
+                }}*/
+    //colos=[];
+    d3.json("/b_events/"+eventID).then(function(pdata){ 
+        //pdata.features[0].properties.winds.forEach(c=>  colos.push(getColor(c)))
+        var myStyle = {
+            "color": 'blue',//colos,
+            "weight": 2,
+            "opacity": 0.5
+        };
+       gpdata=pdata; //global copy
+       L.geoJson(pdata, {
+                style: myStyle
         }).addTo(pathMap)
     
         let dates=gpdata.features[0].properties.dates;

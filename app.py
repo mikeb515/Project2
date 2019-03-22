@@ -48,24 +48,27 @@ con.execute('''CREATE TABLE IF NOT EXISTS Hurricanes(
 csv_df = pd.read_csv('db/hurdat.csv', index_col=0)
 csv_df.to_sql('Hurricanes', engine, if_exists='replace', index=True, index_label="id")
 
-# returns a list of all events with start date, end date and max wind speed
+# timeline.html related
 from getFromDb import getEvents, makeGeo
 
-
-@app.route("/events")
-def events():
+@app.route("/b_events")  #background process - get all events
+def back_events():
     allEvents = getEvents(engine)
-    print(allEvents[0])
-    return jsonify(list(allEvents))  #// for API testing
-    #return render_template("timeline.html", events=jsonify(list(allEvents)))
+    #print(allEvents[0])
+    return jsonify(list(allEvents)) 
 
-# get single event info
-@app.route("/events/<id_x>")
+@app.route("/b_events/<id_x>")  #background process - get info for single event
 def eventX(id_x):
     this_event_geo = makeGeo(engine,id_x)
-    print(this_event_geo)
+    #print(this_event_geo)
     return jsonify(this_event_geo)
 
+@app.route("/timeline")
+def events():
+    #try:
+    return render_template("timeline.html")
+    #except Exception, e:
+     #   return (str(e))
 
 
 #----------------------------------------------

@@ -8,24 +8,27 @@
   <link href="../static/js/vsjs/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
   <link href="../static/css/hurriphoon.css" rel="stylesheet" type="text/css" />
   <link href="../static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Laila" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
   crossorigin=""/>
   
 </head>
 <body>
-
-
-
-
-    
+   
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <h2>
-                Hurricane and Typhoon timeline ( zoom to select an event ).
-                </h2>
+            <div class="col-lg-9 ">
+                
+                <h3 class="text-center" style="font-family: 'Laila', serif;">
+                 Hurricane and Typhoon timeline - select an event .
+                </h3>
             </div>
+            <div id ="hinfo" class="col-lg-3" >
+                    <p >
+                    </p>
+            </div>
+                
         </div>
         <div class="row">
             <div class="col-lg-12">
@@ -50,10 +53,7 @@
     <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
     <!-- for leaftlet extension icons 
     <script src="../static/css/leaflet.extra-markers.min.css"></script>-->
-   
-
-   
-    
+     
     <!-- project specific --> 
  <!-- API Key -->
     <script type="text/javascript" src="../static/js/config.js"></script>
@@ -62,7 +62,7 @@
     <script src="../static/js/maps.js"></script>
     
     <script src="/static/js/timelineSetup.js"></script>
-    {{events}}
+   
     
 
 </body>
