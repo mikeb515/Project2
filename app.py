@@ -24,16 +24,13 @@ def home():
 #    return '<h1> App started ... </h1>'
     return render_template("home.html")
 
-<<<<<<< HEAD
-
-
 # returns a list of all events with start datem, end date and max wind speed
-from getFromDb import getEvents
+#from getFromDb import getEvents
+
 @app.route("/events")
 def events():
     allEvents = getEvents()
     return jsonify(allEvents)
-=======
 #----------------------------------------------
 # Return the heatmap page.
 
@@ -86,7 +83,6 @@ def aldata():
         pts['points'].append([dftmp.iloc[i]['Latitude'],dftmp.iloc[i]['Longitude']])
 
     return jsonify(pts)
->>>>>>> f2f1890f2912c375d7fa80f823a34b4a31a0efc5
 
 if __name__ == "__main__":
     app.run(debug=True)
