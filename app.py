@@ -22,7 +22,7 @@ df = pd.read_csv('db/hurdat.csv')
 @app.route("/")
 def home():
 #    return '<h1> App started ... </h1>'
-    return render_template("home.html")
+    return render_template("landing.html")
 
 # returns a list of all events with start datem, end date and max wind speed
 #from getFromDb import getEvents
