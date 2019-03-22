@@ -36,35 +36,64 @@ function choose(choices) {
     var index = Math.floor(Math.random() * choices.length);
     return choices[index];
     }
-    
+
+
+
+function getColor(x){ 
+    console.log(x);
+    return x > 156 ? '#BD0026' :	//cat5
+            x > 129 ? '#F03b20'	:	//cat4
+            x > 110 ? '#FD8D3C'	:	//cat3
+            x > 95	? '#FECC5C' :	//cat2
+            x > 73	? '#FFFFB2'	:	//cat1
+            x > 38	? '#B6F0B6'	:	//tstorm
+                    '#DCE3DD'; 		//storm
+}
+
 function drawGraphs(pathData){  //replace with actual json query to use in line d3.json...
     /* start with map */
     let mapZoomLevel = 8;
     streetmap.addTo(pathMap);
-   d3.json('../static/js/dorothy_json.json').then(function(pdata){ //console.log(data)});   
+    d3.json('../static/js/dorothy_json.json').then(function(pdata){ //console.log(data)});   
         tdorothy=pdata;
         L.geoJson(pdata, {
-            style: mapStyle 
-        }).addTo(pathMap);
+            style: function (feature) {
+                return {
+                 "color": getColor(feature.properties.winds),
+                 "opacity": 1,
+                }}
+        }).addTo(pathMap);/*
+
         latlns=[]
-        pdata.forEach(e=>{latlns.push([e.Latitude,e.Longitude])})
+        //pdata.forEach(e=>{latlns.push([e.Latitude,e.Longitude])})
         //TODO chnage line color according to status ?? HU=red... // d => choose(['red', 'green']
-        let polyline = L.polyline(latlns, {color:'red', weight:1}).addTo(pathMap);
+       //let polyline = L.polyline(, {color:'red', weight:1}).addTo(pathMap);
+
+        
         // zoom the map to the polyline
-        pathMap.fitBounds(polyline.getBounds());
-        //pathMap.zoomOut(2);
+       // pathMap.fitBounds(polyline.getBounds());
+       // pathMap.zoomOut(3);
         /* followed by wind speed  with ploltly */
+        /*
         dates=[];
         parseDates();
         let trace1 ={
             x:dates,
             y:tdorothy.map(x=> x["Maximum Wind"]),
-            type:'scatter'
+            type:'scatter',
+            fill: 'tozeroy',
         }
         let datas = [trace1];
-        Plotly.newPlot('eventPlot', datas);
-
-
+        var layout = {
+            title: 'Wind Speed throughout event',
+            xaxis: {
+              title: 'Time'
+            },
+            yaxis: {
+              title: 'Max. Wind Speed (mph)'
+            }
+          };
+        Plotly.newPlot('eventPlot', datas, layout);  */
 
     });
 
