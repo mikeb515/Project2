@@ -92,44 +92,56 @@ def heatmap():
 @app.route("/epdata")
 def epdata():
 
-    dftmp = df[df['Location']=='East Pacific']
+    dftmp  = df[df['Location']=='East Pacific']
+    points = {'type':'FeatureCollection', 'features':[]}
 
-    pts = {'points':[]}
+    for i in range(0,dftmp.iloc[0:].shape[0]) :
+        points['features'].append(getdata(dftmp.iloc[i]))
 
-    for i in range(0,dftmp.shape[0]) :
-        pts['points'].append([dftmp.iloc[i]['Latitude'],dftmp.iloc[i]['Longitude']])
-
-    return jsonify(pts)
+    return jsonify(points)
 
 #----------------------------------------------
 # Return data points for Central Pacific 
-
+#
 @app.route("/cpdata")
 def cpdata():
     
-    dftmp = df[df['Location']=='Central Pacific']
+    dftmp  = df[df['Location']=='Central Pacific']
+    points = {'type':'FeatureCollection', 'features':[]}
 
-    pts = {'points':[]}
+    for i in range(0,dftmp.iloc[0:].shape[0]) :
+        points['features'].append(getdata(dftmp.iloc[i]))
 
-    for i in range(0,dftmp.shape[0]) :
-        pts['points'].append([dftmp.iloc[i]['Latitude'],dftmp.iloc[i]['Longitude']])
-
-    return jsonify(pts)
+    return jsonify(points)
 
 #----------------------------------------------
 # Return data points for Atlantic 
-
+#
 @app.route("/aldata")
 def aldata():
     
-    dftmp = df[df['Location']=='Atlantic']
+    dftmp  = df[df['Location']=='Atlantic']
+    points = {'type':'FeatureCollection', 'features':[]}
 
-    pts = {'points':[]}
+    for i in range(0,dftmp.iloc[0:].shape[0]) :
+        points['features'].append(getdata(dftmp.iloc[i]))
 
-    for i in range(0,dftmp.shape[0]) :
-        pts['points'].append([dftmp.iloc[i]['Latitude'],dftmp.iloc[i]['Longitude']])
+    return jsonify(points)
 
-    return jsonify(pts)
+#----------------------------------------------
+# Utility : get data points from dataframe row 
+#
+def getdata (row) :
+    return {'type':'Feature', 
+            'geometry': {
+                'type':'Point',
+                'coordinates':[row['Longitude'],row['Latitude']]
+            },
+            'properties': {
+                'windspeed':int(row['Wind']),
+                'time':row['ISODate']
+            }}
+
 
 if __name__ == "__main__":
     app.run(debug=True)
