@@ -48,6 +48,13 @@ con.execute('''CREATE TABLE IF NOT EXISTS Hurricanes(
 csv_df = pd.read_csv('db/hurdat.csv', index_col=0)
 csv_df.to_sql('Hurricanes', engine, if_exists='replace', index=True, index_label="id")
 
+#landing page
+@app.route("/")
+def land():
+    return render_template("landing.html")
+
+
+
 # timeline.html related
 from getFromDb import getEvents, makeGeo
 

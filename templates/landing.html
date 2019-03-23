@@ -9,58 +9,33 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     
     <title>Hurricanes, Typhoons and Temperature</title>
-    <style>
-        body {
-            margin: 0;
-        }
-        
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            width: 200px;
-            background-color: #f1f1f1;
-            position: absolute;
-            height: 150px;
-            overflow: auto;
-        }
-        
-        li a {
-            display: block;
-            color: #000;
-            padding: 8px 16px;
-            text-decoration: none;
-        }
-        
-        li a.active {
-            background-color: blue;
-            color: white;
-        }
-        
-        li a:hover:not(.active) {
-            background-color: #555;
-            color: white;
-        }
+   
     </style>
 
 </head>
 
 <body>
-    <ul>
-        <li><a class="active" href="#">Home</a></li>
-        <li><a href="/index">Hurricane Tracker</a></li>
-        <li><a href="/heatmap">Heat Map</a></li>
-    </ul>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">HurData&nbsp; &nbsp;</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="timeline">Timeline</a>
+                    <a class="nav-item nav-link" href="heatmap">Heatmap</a><!--
+                    <a class="nav-item nav-link disabled" href="#">Disabled</a>-->
+                  </div>
+                </div>
+              </nav>
 
 
-    <!-- <div class="background"> -->
-    <div>
-        <a href="#"><img src="{{ url_for('static', filename='images/h2.jpg') }}"></a>
-        <div class="box">
-            <p class=a>Welcome to your Hurdata app! This application has the ability to track the temperature, wind speed, location, and movement going back to 1850. Click the Appleye to learn more!
-            </p>
-        </div>
-    </div>
+    <div class="jumbotron" style=" background-image: url(../static/images/h2.jpg); background-size:cover; height:600px; margin-bottom:0px; " >
+          
+            <p class="lead">Welcome to your Hurdata app! This application has the ability to track the temperature, wind speed, location, and movement going back to 1850. Click to learn more!</p>
+          </div>
+          
 
     <script src="https://d3js.org/d3.v5.js"></script>
     <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
