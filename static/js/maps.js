@@ -34,9 +34,9 @@ let mapStyle = {
     weight: 1.5
   };
 
-let pathMap = L.map("pathmap", {
+  let pathMap = L.map("pathmap", {
     center: [31.7128, -41.0059],
     zoom: 2,
-    layers: [streetmap]
+    layers: [satellitemap]
   });
 

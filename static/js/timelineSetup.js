@@ -1,4 +1,6 @@
 var container = document.getElementById('timeline');
+let plotdiv=document.getElementById("eventPlot");
+let mapdiv=document.getElementById("pathmap");
 let gevents; //global copy of event response
 let gclick; // global copy of click data 
 let gpdata; // global copy of patg data
@@ -40,25 +42,22 @@ function getColor(x){
 // get event specific data from /
 function drawGraphs(eventID){  //replace with actual json query to use in line d3.json...
     /* start with map */
-    outdoorsmap.addTo(pathMap);
-               /* function (feature) {
-                return {
-                 "color": 'blue',//getColor(feature.properties.winds),
-                 "opacity": 1
-                }}*/
-    //colos=[];
     d3.json("/b_events/"+eventID).then(function(pdata){ 
+        gpdata=pdata; //global copy
+        satellitemap.addTo(pathMap);
         //pdata.features[0].properties.winds.forEach(c=>  colos.push(getColor(c)))
+
         var myStyle = {
-            "color": 'blue',//colos,
+            "color": getColor(d3.max(gpdata.features[0].properties.winds)),
             "weight": 2,
             "opacity": 0.5
         };
-       gpdata=pdata; //global copy
        L.geoJson(pdata, {
                 style: myStyle
         }).addTo(pathMap)
-    
+        // wind speeed plot
+
+        //plotdiv.style.display="block";
         let dates=gpdata.features[0].properties.dates;
         let winds=gpdata.features[0].properties.winds;
         //console.log(winds);
