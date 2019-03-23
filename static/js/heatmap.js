@@ -41,21 +41,22 @@ let darkmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?
 // Create map object
 let myMap = L.map("map", {
   center : [37.09, -95.71],
-  zoom   : 3
+  zoom   : 3,
+  maxBounds : [[-90,-180], [90,180]]
 });
 
 // Show the map
 streetmap.addTo(myMap);
 
-d3.json('/epdata', function(hurdat) {
+d3.json('/epdatadb', function(hurdat) {
   let ephurdat = hurdat;
   console.log("Got EP data ...")
 
-  d3.json('/cpdata', function(hurdat) {
+  d3.json('/cpdatadb', function(hurdat) {
     let cphurdat = hurdat;
     console.log("Got CP data ...")
 
-    d3.json('/aldata', function(hurdat) {
+    d3.json('/aldatadb', function(hurdat) {
       let alhurdat = hurdat;
       console.log("Got AL data ...")
 

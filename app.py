@@ -1,4 +1,4 @@
-import os
+import os, sys
 import json
 
 import pandas as pd
@@ -15,8 +15,6 @@ from flask import Response
 
 app = Flask(__name__)
 
-df = pd.read_csv('db/hurdat.csv')
-
 #----------------------------------------------
 # Return the homepage.
 
@@ -24,7 +22,6 @@ df = pd.read_csv('db/hurdat.csv')
 def home():
 #    return '<h1> App started ... </h1>'
     return render_template("landing.html")
-
 
 #Connect and Load data from csv into db:
 from sqlalchemy import create_engine, ForeignKey
@@ -45,6 +42,8 @@ con.execute('''CREATE TABLE IF NOT EXISTS Hurricanes(
                 ISODate Varchar (100),
                 Location Varchar (100)
                 )''')
+
+print("Creating database from csv file.")
 csv_df = pd.read_csv('db/hurdat.csv', index_col=0)
 csv_df.to_sql('Hurricanes', engine, if_exists='replace', index=True, index_label="id")
 
@@ -88,11 +87,12 @@ def heatmap():
 
 #----------------------------------------------
 # Return data points for East Pacific 
+#
+@app.route("/epdatadb")
+def epdatadb():
 
-@app.route("/epdata")
-def epdata():
-
-    dftmp  = df[df['Location']=='East Pacific']
+    id = "East Pacific"
+    dftmp =  pd.read_sql('Select * from Hurricanes where location="'+id+'" Order by Date,Time',engine)
     points = {'type':'FeatureCollection', 'features':[]}
 
     for i in range(0,dftmp.iloc[0:].shape[0]) :
@@ -103,10 +103,11 @@ def epdata():
 #----------------------------------------------
 # Return data points for Central Pacific 
 #
-@app.route("/cpdata")
-def cpdata():
-    
-    dftmp  = df[df['Location']=='Central Pacific']
+@app.route("/cpdatadb")
+def cpdatadb():
+
+    id = "Central Pacific"
+    dftmp =  pd.read_sql('Select * from Hurricanes where location="'+id+'" Order by Date,Time',engine)
     points = {'type':'FeatureCollection', 'features':[]}
 
     for i in range(0,dftmp.iloc[0:].shape[0]) :
@@ -117,10 +118,11 @@ def cpdata():
 #----------------------------------------------
 # Return data points for Atlantic 
 #
-@app.route("/aldata")
-def aldata():
-    
-    dftmp  = df[df['Location']=='Atlantic']
+@app.route("/aldatadb")
+def aldatadb():
+
+    id = "Atlantic"
+    dftmp =  pd.read_sql('Select * from Hurricanes where location="'+id+'" Order by Date,Time',engine)
     points = {'type':'FeatureCollection', 'features':[]}
 
     for i in range(0,dftmp.iloc[0:].shape[0]) :
