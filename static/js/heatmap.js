@@ -21,8 +21,8 @@ const magStyles = [{mag: 0, style:{radius: 15000, color:'blue', opacity:.25, fil
   // Initial layer using street maps
   let streetmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-  maxZoom: 9,
-  minZoom: 3,
+  maxZoom: 5,
+  minZoom: 2,
   id: "mapbox.streets",
   accessToken: API_KEY,
   noWrap: true
@@ -31,8 +31,8 @@ const magStyles = [{mag: 0, style:{radius: 15000, color:'blue', opacity:.25, fil
 // Secondary layer using "dark" map
 let darkmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-  maxZoom: 9,
-  minZoom: 3,
+  maxZoom: 55,
+  minZoom: 2,
   id: "mapbox.dark",
   accessToken: API_KEY,
   noWrap: true
@@ -72,10 +72,27 @@ d3.json('/epdata', function(hurdat) {
       };
 
       // Add primary basemap and earthquake data overlay to the map
-      // Add legend for circle colors / magnitude to the map
       // Create the layer control, and add it to the map
       //myMap.addLayer(baseMaps["Street Map"]).addLayer(earthquakes)
       myMap.addControl(L.control.layers(baseMaps, overlayMaps, {collapsed: false}));
+
+
+      // Add legend for circle colors / magnitude to the map
+      let legend = L.control({position: 'bottomright'});
+
+      legend.onAdd = function (map) {
+          var div = L.DomUtil.create('div', 'info legend');
+          
+          for (i=0; i<magStyles.length-1; i++) {
+            div.innerHTML += `<i style="background:${magStyles[i]['style']['color']}"></i>Wind < ${magStyles[i+1]['mag']} <br>`;
+          }
+          div.innerHTML += `<i style="background:${magStyles[magStyles.length-1]['style']['color']}"></i>Wind >= ${magStyles[magStyles.length-1]['mag']} <br>`;
+
+          return div;
+      };
+      
+      legend.addTo(myMap);
+
     });
   });
 });
@@ -92,4 +109,3 @@ function magStyle(mag) {
 function magCircle (feature, latlng) {
   return L.circle(latlng, magStyle(feature.properties.windspeed));
 }
-
